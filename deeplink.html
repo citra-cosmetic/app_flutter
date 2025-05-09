@@ -3,27 +3,6 @@
 <head>
     <title>Redirecting to Citra Cosmetic App</title>
     <script>
-        // Function to check if the app is installed
-        function isAppInstalled() {
-            return new Promise(resolve => {
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                iframe.src = 'citraapp://product/test';
-                
-                iframe.onload = () => {
-                    document.body.removeChild(iframe);
-                    resolve(true);
-                };
-                
-                iframe.onerror = () => {
-                    document.body.removeChild(iframe);
-                    resolve(false);
-                };
-                
-                document.body.appendChild(iframe);
-            });
-        }
-
         // Extract product ID from URL
         function getProductId() {
             const query = window.location.search;
@@ -32,33 +11,23 @@
             return productPath ? productPath.split('/')[1] : '';
         }
 
-        async function redirect() {
-            const productId = getProductId();
-            
-            // Check if app is installed first
-            const installed = await isAppInstalled();
-            
-            if (installed && productId) {
-                // Directly open the app with deep link
-                window.location.href = `citraapp://product/${productId}`;
-                return;
-            }
-            
-            // Fallback options
+        const productId = getProductId();
+        
+        // Try custom scheme first
+        if (productId) {
+            window.location.href = `citraapp://product/${productId}`;
+        }
+        
+        // Fallback to web version or Play Store after delay
+        setTimeout(() => {
             if (productId) {
-                // Option 1: Open web version
+                // Fallback to web version if app not installed
                 window.location.href = `https://citra-cosmetic.github.io/web/product/${productId}`;
-                
-                // Option 2: Open Play Store with referrer
-                // window.location.href = `https://play.google.com/store/apps/details?id=com.example.citraapp&referrer=product_id%3D${productId}`;
             } else {
-                // Default to Play Store
+                // Fallback to Play Store if no product ID
                 window.location.href = "https://play.google.com/store/apps/details?id=com.example.citraapp";
             }
-        }
-
-        // Start the redirect process
-        redirect();
+        }, 1000);
     </script>
 </head>
 <body>
