@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        // Redirect ke custom scheme setelah halaman terbuka
+        window.location.href = "citraapp://product/" + window.location.pathname.split('/product/')[1];
+        
+        // Fallback jika app tidak terinstall
+        setTimeout(function() {
+            window.location.href = "https://play.google.com/store/apps/details?id=com.example.citraapp";
+        }, 1000);
+    </script>
+</head>
+<body>
+    <h1>Redirecting to app...</h1>
+</body>
+</html>
