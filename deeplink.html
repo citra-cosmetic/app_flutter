@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        // Ambil ID produk dari URL (format: https://github.com/citra-cosmetic/app_flutter/product/123)
+        const pathSegments = window.location.pathname.split('/');
+        const productId = pathSegments[pathSegments.length - 1];
+        
+        // Redirect ke custom scheme
+        window.location.href = `citraapp://product/${productId}`;
+        
+        // Fallback ke Play Store/App Store
+        setTimeout(() => {
+            window.location.href = "https://play.google.com/store/apps/details?id=com.citra.cosmetic";
+        }, 1000);
+    </script>
+</head>
+<body>
+    <p>Redirecting to Citra Cosmetic App...</p>
+</body>
+</html>
